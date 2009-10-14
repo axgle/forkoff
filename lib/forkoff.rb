@@ -132,7 +132,11 @@ module Forkoff
   extend self
 end
 
-module Enumerable 
+module Enumerable
+   def fork options = {}, &block
+	options = { 'processes' => Integer(self.size) } unless Hash === options   
+	forkoff options, &block
+   end	   
   def forkoff options = {}, &block
     options = { 'processes' => Integer(options) } unless Hash === options
     n = Integer( options['processes'] || options[:processes] || Forkoff.default['processes'] )
